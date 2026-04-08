@@ -1,0 +1,965 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Events — Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#faf7f2;
+  --cream2:#f2ede4;
+  --paper:#fffcf7;
+  --ink:#1a1208;
+  --ink2:#3d3420;
+  --muted:#9a8e7a;
+  --border:#ddd5c4;
+  --border2:#c8bfad;
+  --accent:#c8402a;
+  --accent2:#2a6c8a;
+  --accent3:#3a7a3a;
+  --gold:#b8860b;
+  --card-bg:#fffdf9;
+  --input-bg:#faf7f2;
+}
+
+body{
+  font-family:'Instrument Sans',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── NOISE TEXTURE OVERLAY ─── */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:0;
+  opacity:.6;
+}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;
+  padding:0;
+  overflow:hidden;
+  border-bottom:2px solid var(--ink);
+}
+.hero-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:440px;
+}
+.hero-left{
+  padding:60px 56px;
+  border-right:2px solid var(--ink);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:var(--ink);
+  color:var(--cream);
+  position:relative;
+  overflow:hidden;
+}
+.hero-left::after{
+  content:'';
+  position:absolute;
+  bottom:-80px;right:-80px;
+  width:300px;height:300px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.07);
+}
+.hero-left::before{
+  content:'';
+  position:absolute;
+  top:-40px;left:-40px;
+  width:200px;height:200px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.05);
+}
+.edition-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:rgba(250,247,242,0.5);
+  font-weight:500;
+  margin-bottom:32px;
+}
+.edition-tag .line{width:28px;height:1px;background:var(--accent);display:inline-block}
+h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(44px,6vw,72px);
+  font-weight:900;
+  line-height:.95;
+  letter-spacing:-.02em;
+  color:var(--cream);
+  position:relative;
+  z-index:1;
+}
+h1 em{
+  font-style:italic;
+  color:var(--accent);
+}
+.hero-desc{
+  font-size:14px;
+  color:rgba(250,247,242,0.55);
+  line-height:1.7;
+  margin-top:24px;
+  max-width:340px;
+  font-weight:400;
+}
+.hero-right{
+  background:var(--cream2);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:48px 52px;
+  position:relative;
+}
+.hero-right-label{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:var(--muted);
+  margin-bottom:32px;
+  font-weight:600;
+}
+.stats-stack{display:flex;flex-direction:column;gap:0}
+.stat-row{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  padding:20px 0;
+  border-bottom:1px solid var(--border);
+}
+.stat-row:first-of-type{border-top:1px solid var(--border)}
+.stat-num{
+  font-family:'Playfair Display',serif;
+  font-size:42px;
+  font-weight:700;
+  color:var(--ink);
+  line-height:1;
+  min-width:80px;
+}
+.stat-lbl{font-size:13px;color:var(--muted);font-weight:500}
+
+/* ─── SECTION WRAPPER ─── */
+.section{
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 40px 80px;
+}
+
+/* ─── SECTION HEADER ─── */
+.section-header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  padding:48px 0 28px;
+  border-bottom:2px solid var(--ink);
+  margin-bottom:32px;
+}
+.section-hed{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.section-eyebrow{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:var(--accent);
+  font-weight:600;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:34px;
+  font-weight:700;
+  line-height:1;
+  color:var(--ink);
+}
+.filter-tabs{display:flex;gap:0;border:1.5px solid var(--ink);border-radius:2px;overflow:hidden}
+.tab{
+  padding:9px 20px;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  color:var(--ink);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-family:'Instrument Sans',sans-serif;
+  border-right:1.5px solid var(--ink);
+  transition:all .18s;
+}
+.tab:last-child{border-right:none}
+.tab.active{background:var(--ink);color:var(--cream)}
+.tab:hover:not(.active){background:var(--cream2)}
+
+/* ─── EVENTS GRID ─── */
+.events-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5px;
+  background:var(--ink);
+  border:1.5px solid var(--ink);
+  margin-bottom:60px;
+}
+@media(max-width:780px){.events-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.events-grid{grid-template-columns:1fr}}
+
+.event-card{
+  background:var(--card-bg);
+  cursor:pointer;
+  transition:background .18s;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+.event-card:hover{background:var(--cream2)}
+.event-card.selected{background:var(--ink);}
+.event-card.selected .card-title,
+.event-card.selected .card-meta,
+.event-card.selected .seats-label{color:var(--cream)}
+.event-card.selected .card-meta span{color:rgba(250,247,242,0.5)}
+.event-card.selected .card-tag{opacity:.7}
+.event-card.selected .card-footer{border-top-color:rgba(255,255,255,0.12)}
+.event-card.selected .seats-bar{background:rgba(255,255,255,0.12)}
+
+.card-banner{
+  height:10px;
+  width:100%;
+}
+.banner-tech{background:var(--accent2)}
+.banner-cultural{background:var(--accent)}
+.banner-workshop{background:var(--accent3)}
+.banner-seminar{background:var(--gold)}
+
+.card-emoji-row{
+  padding:28px 24px 12px;
+  font-size:36px;
+  line-height:1;
+}
+.card-body{padding:0 24px 16px;flex:1}
+.card-tag{
+  display:inline-block;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-weight:700;
+  padding:3px 9px;
+  border-radius:2px;
+  margin-bottom:10px;
+}
+.tag-tech{background:rgba(42,108,138,0.12);color:var(--accent2)}
+.tag-cultural{background:rgba(200,64,42,0.1);color:var(--accent)}
+.tag-workshop{background:rgba(58,122,58,0.1);color:var(--accent3)}
+.tag-seminar{background:rgba(184,134,11,0.12);color:var(--gold)}
+
+.card-title{
+  font-family:'Playfair Display',serif;
+  font-size:20px;
+  font-weight:700;
+  line-height:1.15;
+  margin-bottom:10px;
+  color:var(--ink);
+}
+.card-meta{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px;font-weight:500}
+.card-meta span{display:flex;align-items:center;gap:6px}
+
+.card-footer{
+  padding:14px 24px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-top:auto;
+}
+.seats-bar-wrap{flex:1}
+.seats-label{font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em}
+.seats-bar{height:3px;background:var(--border);border-radius:0;overflow:hidden}
+.seats-fill{height:100%;border-radius:0;transition:width .4s}
+
+.register-btn{
+  padding:8px 18px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  border:1.5px solid var(--ink);
+  background:transparent;
+  color:var(--ink);
+  font-family:'Instrument Sans',sans-serif;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  border-radius:2px;
+  transition:all .18s;
+  white-space:nowrap;
+}
+.register-btn.avail:hover{background:var(--ink);color:var(--cream)}
+.event-card.selected .register-btn{border-color:var(--cream);color:var(--cream)}
+.event-card.selected .register-btn:hover{background:var(--cream);color:var(--ink)}
+.register-btn.full{opacity:.35;cursor:not-allowed;border-style:dashed}
+
+.selected-check{
+  position:absolute;
+  top:14px;right:14px;
+  width:26px;height:26px;
+  border-radius:50%;
+  background:var(--accent);
+  color:#fff;
+  font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;
+  transition:opacity .2s;
+  font-weight:700;
+}
+.event-card.selected .selected-check{opacity:1}
+
+/* ─── STEPPER ─── */
+.stepper{
+  display:flex;
+  align-items:center;
+  margin-bottom:40px;
+  border:1.5px solid var(--ink);
+  border-radius:2px;
+  overflow:hidden;
+}
+.step{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:16px 20px;
+  border-right:1.5px solid var(--ink);
+  background:var(--card-bg);
+  transition:background .2s;
+}
+.step:last-child{border-right:none}
+.step.s-done{background:var(--ink)}
+.step.s-active{background:var(--cream2)}
+.step-num{
+  font-family:'Playfair Display',serif;
+  font-size:18px;
+  font-weight:700;
+  color:var(--muted);
+  min-width:28px;
+}
+.step.s-done .step-num{color:var(--accent)}
+.step.s-active .step-num{color:var(--ink)}
+.step-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:600;color:var(--muted)}
+.step.s-done .step-lbl{color:rgba(250,247,242,0.5)}
+.step.s-active .step-lbl{color:var(--ink)}
+
+/* ─── FORM ─── */
+.form-section{
+  background:var(--card-bg);
+  border:1.5px solid var(--ink);
+  border-radius:2px;
+  overflow:hidden;
+}
+.form-topbar{
+  background:var(--ink);
+  color:var(--cream);
+  padding:28px 40px;
+  display:flex;
+  align-items:baseline;
+  gap:20px;
+  border-bottom:2px solid var(--ink);
+}
+.form-topbar-num{
+  font-family:'Playfair Display',serif;
+  font-size:52px;
+  font-weight:900;
+  line-height:1;
+  color:rgba(250,247,242,0.15);
+}
+.form-topbar-text{}
+.form-title{
+  font-family:'Playfair Display',serif;
+  font-size:26px;
+  font-weight:700;
+  color:var(--cream);
+  line-height:1;
+}
+.form-sub{font-size:13px;color:rgba(250,247,242,0.45);margin-top:4px}
+.form-body{padding:36px 40px}
+
+.selected-event-preview{
+  background:var(--cream2);
+  border:1.5px solid var(--border2);
+  border-left:4px solid var(--accent);
+  border-radius:2px;
+  padding:16px 20px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:28px;
+}
+.sep-emoji{font-size:28px}
+.sep-info{flex:1}
+.sep-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700}
+.sep-date{font-size:12px;color:var(--muted);margin-top:2px;font-weight:500}
+.sep-clear{
+  font-size:11px;
+  padding:5px 12px;
+  border:1.5px solid var(--border2);
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'Instrument Sans',sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-weight:600;
+  border-radius:2px;
+  transition:all .18s;
+}
+.sep-clear:hover{border-color:var(--accent);color:var(--accent)}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:24px}
+@media(max-width:580px){.form-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:8px}
+.field.full{grid-column:1/-1}
+label{
+  font-size:11px;
+  font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+input,select,textarea{
+  background:var(--input-bg);
+  border:1.5px solid var(--border);
+  border-radius:2px;
+  padding:13px 16px;
+  font-size:14px;
+  color:var(--ink);
+  font-family:'Instrument Sans',sans-serif;
+  outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  width:100%;
+}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:.6}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--ink);
+  box-shadow:0 0 0 3px rgba(26,18,8,0.06);
+}
+select{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%239a8e7a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+  padding-right:40px;
+  cursor:pointer;
+}
+select option{background:var(--cream)}
+textarea{resize:none;line-height:1.6}
+
+/* ─── SUBMIT ─── */
+.submit-row{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+  padding-top:24px;
+  border-top:1.5px solid var(--border);
+}
+.submit-btn{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px 40px;
+  background:var(--ink);
+  color:var(--cream);
+  border:none;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  cursor:pointer;
+  border-radius:2px;
+  transition:all .22s;
+  position:relative;
+  overflow:hidden;
+}
+.submit-btn::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:var(--accent);
+  transform:translateX(-100%);
+  transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.submit-btn:hover::after{transform:translateX(0)}
+.submit-btn:hover{color:#fff}
+.submit-btn span{position:relative;z-index:1}
+.submit-btn:disabled{opacity:.35;cursor:not-allowed}
+.submit-btn:disabled::after{display:none}
+.privacy-note{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ─── SUCCESS OVERLAY ─── */
+.success-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(26,18,8,0.88);
+  z-index:100;
+  align-items:center;
+  justify-content:center;
+  backdrop-filter:blur(6px);
+}
+.success-overlay.show{display:flex}
+.success-card{
+  background:var(--cream);
+  border:2px solid var(--ink);
+  border-radius:2px;
+  padding:0;
+  max-width:460px;
+  width:90%;
+  animation:riseUp .4s cubic-bezier(.34,1.56,.64,1);
+  overflow:hidden;
+}
+@keyframes riseUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.success-top{
+  background:var(--ink);
+  padding:36px 40px;
+  text-align:center;
+}
+.success-icon{font-size:48px;display:block;margin-bottom:16px}
+.success-title{
+  font-family:'Playfair Display',serif;
+  font-size:30px;
+  font-weight:900;
+  color:var(--cream);
+  margin-bottom:8px;
+}
+.success-sub-top{font-size:13px;color:rgba(250,247,242,0.45);line-height:1.6}
+.success-bottom{padding:28px 40px;text-align:center}
+.success-event{
+  display:inline-block;
+  font-family:'Playfair Display',serif;
+  font-size:18px;
+  font-weight:700;
+  font-style:italic;
+  color:var(--accent);
+  margin:10px 0 6px;
+}
+.success-email{font-size:13px;color:var(--muted);margin-bottom:24px}
+.success-email span{color:var(--ink);font-weight:600}
+.success-close{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 30px;
+  background:var(--ink);
+  color:var(--cream);
+  border:none;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  cursor:pointer;
+  border-radius:2px;
+  transition:background .2s;
+}
+.success-close:hover{background:var(--accent)}
+
+/* ─── TOAST ─── */
+.fb-toast{
+  position:fixed;
+  bottom:28px;right:28px;
+  background:var(--ink);
+  color:var(--cream);
+  border-radius:2px;
+  padding:14px 22px;
+  font-size:13px;
+  display:flex;align-items:center;gap:10px;
+  z-index:200;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  transform:translateY(80px);opacity:0;
+  font-weight:500;
+  border-left:4px solid var(--border2);
+}
+.fb-toast.show{transform:translateY(0);opacity:1}
+.fb-toast.success{border-left-color:var(--accent3)}
+.fb-toast.error{border-left-color:var(--accent)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-left{padding:40px 28px;border-right:none;border-bottom:2px solid var(--ink)}
+  .hero-right{padding:32px 28px}
+  .section{padding:0 20px 60px}
+  .section-header{flex-direction:column;align-items:flex-start;gap:16px}
+  .stepper{flex-direction:column;border-radius:2px}
+  .step{border-right:none;border-bottom:1.5px solid var(--ink);width:100%}
+  .step:last-child{border-bottom:none}
+  .form-topbar{padding:24px 24px}
+  .form-body{padding:24px 24px}
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--cream)}
+::-webkit-scrollbar-thumb{background:var(--border2)}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div>
+        <div class="edition-tag"><span class="line"></span>University Events Portal — 2025</div>
+        <h1>Register<br>for <em>Campus</em><br>Events</h1>
+        <p class="hero-desc">Discover Tech Fests, Cultural Nights, Workshops, and more. One click to secure your spot.</p>
+      </div>
+      <div style="font-size:11px;color:rgba(250,247,242,0.25);text-transform:uppercase;letter-spacing:.12em;margin-top:48px">8 Departments · Season 2025</div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-label">By the Numbers</div>
+      <div class="stats-stack">
+        <div class="stat-row"><span class="stat-num">12+</span><span class="stat-lbl">Active Events this Season</span></div>
+        <div class="stat-row"><span class="stat-num">2,400</span><span class="stat-lbl">Students Registered</span></div>
+        <div class="stat-row"><span class="stat-num">8</span><span class="stat-lbl">Departments Participating</span></div>
+        <div class="stat-row"><span class="stat-num" style="color:var(--accent)">3</span><span class="stat-lbl">Days Until Registrations Close</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EVENTS SECTION -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-hed">
+      <div class="section-eyebrow">Browse &amp; Select</div>
+      <div class="section-title">Upcoming Events</div>
+    </div>
+    <div class="filter-tabs">
+      <button class="tab active" onclick="filterEvents('all',this)">All</button>
+      <button class="tab" onclick="filterEvents('tech',this)">Tech</button>
+      <button class="tab" onclick="filterEvents('cultural',this)">Cultural</button>
+      <button class="tab" onclick="filterEvents('workshop',this)">Workshop</button>
+    </div>
+  </div>
+
+  <div class="events-grid" id="events-grid"></div>
+
+  <!-- STEPPER -->
+  <div class="stepper" style="margin-bottom:32px">
+    <div class="step s-done" id="step-1">
+      <span class="step-num" id="s1-num">✓</span>
+      <span class="step-lbl">Browse Events</span>
+    </div>
+    <div class="step s-active" id="step-2">
+      <span class="step-num" id="s2-num">02</span>
+      <span class="step-lbl">Select Event</span>
+    </div>
+    <div class="step" id="step-3">
+      <span class="step-num" id="s3-num">03</span>
+      <span class="step-lbl" id="sl3-lbl">Your Details</span>
+    </div>
+    <div class="step" id="step-4">
+      <span class="step-num" id="s4-num">04</span>
+      <span class="step-lbl">Confirmed</span>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-section">
+    <div class="form-topbar">
+      <div class="form-topbar-num">03</div>
+      <div class="form-topbar-text">
+        <div class="form-title">Complete Registration</div>
+        <div class="form-sub">Fill in your details below to confirm your seat</div>
+      </div>
+    </div>
+    <div class="form-body">
+      <div id="event-preview-area"></div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" id="full-name" placeholder="e.g. Aarav Shah" oninput="checkForm()">
+        </div>
+        <div class="field">
+          <label>Student ID</label>
+          <input type="text" id="student-id" placeholder="e.g. CS2024001" oninput="checkForm()">
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="you@university.edu" oninput="checkForm()">
+        </div>
+        <div class="field">
+          <label>Department</label>
+          <select id="dept" onchange="checkForm()">
+            <option value="">Select department</option>
+            <option>Computer Science</option>
+            <option>Electronics &amp; Communication</option>
+            <option>Mechanical Engineering</option>
+            <option>Civil Engineering</option>
+            <option>Information Technology</option>
+            <option>Business Administration</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Event Name</label>
+          <select id="event-select" onchange="onEventSelectChange()">
+            <option value="">Choose an event</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Year of Study</label>
+          <select id="year" onchange="checkForm()">
+            <option value="">Select year</option>
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Special Requirements <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);opacity:.7">(optional)</span></label>
+          <textarea id="message" rows="3" placeholder="Dietary needs, accessibility requirements, or questions..."></textarea>
+        </div>
+      </div>
+      <div class="submit-row">
+        <button class="submit-btn" id="submit-btn" onclick="handleSubmit()" disabled>
+          <span id="btn-text">Register Now</span>
+          <span>→</span>
+        </button>
+        <p class="privacy-note">Your data is stored securely on<br>Google Cloud (Firebase). No login required.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="success-overlay">
+  <div class="success-card">
+    <div class="success-top">
+      <span class="success-icon">🎉</span>
+      <div class="success-title">You're Registered!</div>
+      <div class="success-sub-top">Confirmation details have been saved to the cloud.</div>
+    </div>
+    <div class="success-bottom">
+      <div style="font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700">See you at</div>
+      <div class="success-event" id="success-event-name">—</div>
+      <div class="success-email">A confirmation will be sent to <span id="success-email">your email</span></div>
+      <button class="success-close" onclick="closeSuccess()">← Register for Another Event</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="fb-toast" id="fb-toast">
+  <span id="fb-toast-icon">🔥</span>
+  <span id="fb-toast-msg">Connecting to Firebase...</span>
+</div>
+
+<!-- =============================================
+     FIREBASE SDK
+     ============================================= -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+  import { getFirestore, collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBUk_3ZoIp00aR9TGbbobZ1polUGgfotaA",
+    authDomain: "event-registration-acefb.firebaseapp.com",
+    projectId: "event-registration-acefb",
+    storageBucket: "event-registration-acefb.firebasestorage.app",
+    messagingSenderId: "578341495343",
+    appId: "1:578341495343:web:3c28d254819297a43ddcda",
+    measurementId: "G-9QTRP0DFWR"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+
+  window._db = db;
+  window._addDoc = addDoc;
+  window._collection = collection;
+  window._serverTimestamp = serverTimestamp;
+  window._firebaseReady = true;
+
+  showToast('🔥', 'Firebase connected!', 'success');
+</script>
+
+<!-- =============================================
+     APP LOGIC
+     ============================================= -->
+<script>
+function showToast(icon, msg, type=''){
+  const t=document.getElementById('fb-toast');
+  document.getElementById('fb-toast-icon').textContent=icon;
+  document.getElementById('fb-toast-msg').textContent=msg;
+  t.className='fb-toast show'+(type?' '+type:'');
+  setTimeout(()=>{t.className='fb-toast'},3500);
+}
+
+const events=[
+  {id:1,name:'TechFest 2025',type:'tech',emoji:'⚡',date:'Jan 18, 2025',time:'9:00 AM',venue:'Main Auditorium',seats:200,filled:162,tag:'Technical',tagClass:'tag-tech',bannerClass:'banner-tech'},
+  {id:2,name:'Cultural Night',type:'cultural',emoji:'🎭',date:'Jan 22, 2025',time:'6:00 PM',venue:'Open Air Theatre',seats:500,filled:310,tag:'Cultural',tagClass:'tag-cultural',bannerClass:'banner-cultural'},
+  {id:3,name:'Cloud Workshop',type:'workshop',emoji:'☁️',date:'Jan 25, 2025',time:'10:00 AM',venue:'Lab 204',seats:40,filled:38,tag:'Workshop',tagClass:'tag-workshop',bannerClass:'banner-workshop'},
+  {id:4,name:'AI & ML Seminar',type:'tech',emoji:'🤖',date:'Jan 28, 2025',time:'2:00 PM',venue:'Seminar Hall B',seats:120,filled:75,tag:'Technical',tagClass:'tag-tech',bannerClass:'banner-tech'},
+  {id:5,name:'Art Exhibition',type:'cultural',emoji:'🎨',date:'Feb 1, 2025',time:'11:00 AM',venue:'Art Gallery',seats:300,filled:90,tag:'Cultural',tagClass:'tag-cultural',bannerClass:'banner-cultural'},
+  {id:6,name:'Web Dev Workshop',type:'workshop',emoji:'💻',date:'Feb 5, 2025',time:'9:30 AM',venue:'Lab 301',seats:60,filled:55,tag:'Workshop',tagClass:'tag-workshop',bannerClass:'banner-workshop'},
+];
+
+let selectedEventId=null;
+let activeFilter='all';
+
+function renderEvents(filter){
+  const grid=document.getElementById('events-grid');
+  const filtered=filter==='all'?events:events.filter(e=>e.type===filter);
+  grid.innerHTML=filtered.map(e=>{
+    const pct=Math.round(e.filled/e.seats*100);
+    const isFull=e.filled>=e.seats;
+    const isSelected=selectedEventId===e.id;
+    const fillColor=pct>85?'#c8402a':pct>60?'#b8860b':'#3a7a3a';
+    return `<div class="event-card${isSelected?' selected':''}" id="card-${e.id}" onclick="selectEvent(${e.id})">
+      <div class="selected-check">✓</div>
+      <div class="card-banner ${e.bannerClass}"></div>
+      <div class="card-emoji-row">${e.emoji}</div>
+      <div class="card-body">
+        <div class="card-tag ${e.tagClass}">${e.tag}</div>
+        <div class="card-title">${e.name}</div>
+        <div class="card-meta">
+          <span>📅 ${e.date} · ${e.time}</span>
+          <span>📍 ${e.venue}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="seats-bar-wrap">
+          <div class="seats-label">${e.seats-e.filled} seats left</div>
+          <div class="seats-bar"><div class="seats-fill" style="width:${pct}%;background:${fillColor}"></div></div>
+        </div>
+        <button class="register-btn ${isFull?'full':'avail'}" onclick="event.stopPropagation();selectEvent(${e.id})">${isFull?'Full':'Select'}</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const sel=document.getElementById('event-select');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">Choose an event</option>'+events.map(e=>`<option value="${e.id}" ${e.filled>=e.seats?'disabled':''} ${cur==e.id?'selected':''}>${e.name} — ${e.date}${e.filled>=e.seats?' (Full)':''}</option>`).join('');
+  if(selectedEventId) sel.value=selectedEventId;
+}
+
+function filterEvents(type,btn){
+  activeFilter=type;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderEvents(type);
+}
+
+function selectEvent(id){
+  selectedEventId=id;
+  renderEvents(activeFilter);
+  const e=events.find(ev=>ev.id===id);
+  if(!e||e.filled>=e.seats)return;
+  document.getElementById('event-select').value=id;
+  const area=document.getElementById('event-preview-area');
+  area.innerHTML=`<div class="selected-event-preview">
+    <span class="sep-emoji">${e.emoji}</span>
+    <div class="sep-info"><div class="sep-name">${e.name}</div><div class="sep-date">${e.date} · ${e.time} · ${e.venue}</div></div>
+    <button class="sep-clear" onclick="clearEvent()">✕ Clear</button>
+  </div>`;
+  // Stepper
+  document.getElementById('step-2').className='step s-done';
+  document.getElementById('s2-num').textContent='✓';
+  document.getElementById('step-3').className='step s-active';
+  checkForm();
+  document.querySelector('.form-section').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function clearEvent(){
+  selectedEventId=null;
+  document.getElementById('event-select').value='';
+  document.getElementById('event-preview-area').innerHTML='';
+  document.getElementById('step-2').className='step s-active';
+  document.getElementById('s2-num').textContent='02';
+  document.getElementById('step-3').className='step';
+  renderEvents(activeFilter);
+  checkForm();
+}
+
+function onEventSelectChange(){
+  const id=parseInt(document.getElementById('event-select').value);
+  if(id) selectEvent(id); else clearEvent();
+}
+
+function checkForm(){
+  const name=document.getElementById('full-name').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const dept=document.getElementById('dept').value;
+  const year=document.getElementById('year').value;
+  const valid=name&&email&&dept&&year&&selectedEventId!=null;
+  document.getElementById('submit-btn').disabled=!valid;
+}
+
+async function handleSubmit(){
+  const btn=document.getElementById('submit-btn');
+  const txt=document.getElementById('btn-text');
+  if(!window._firebaseReady){showToast('⚠️','Firebase not ready yet...','error');return;}
+  btn.disabled=true;
+  txt.textContent='Saving to Cloud...';
+  showToast('⏳','Saving your registration...','');
+  const e=events.find(ev=>ev.id===selectedEventId);
+  const data={
+    fullName:document.getElementById('full-name').value.trim(),
+    studentId:document.getElementById('student-id').value.trim(),
+    email:document.getElementById('email').value.trim(),
+    department:document.getElementById('dept').value,
+    yearOfStudy:document.getElementById('year').value,
+    message:document.getElementById('message').value.trim(),
+    eventId:selectedEventId,
+    eventName:e?e.name:'',
+    eventDate:e?e.date:'',
+    eventVenue:e?e.venue:'',
+    registeredAt:window._serverTimestamp()
+  };
+  try{
+    const docRef=await window._addDoc(window._collection(window._db,"registrations"),data);
+    console.log("✅ Saved! Doc ID:",docRef.id);
+    showToast('✅','Saved to Firebase!','success');
+    document.getElementById('success-event-name').textContent=e?e.name:'the event';
+    document.getElementById('success-email').textContent=data.email;
+    document.getElementById('success-overlay').classList.add('show');
+    document.getElementById('step-4').className='step s-done';
+    document.getElementById('s4-num').textContent='✓';
+  }catch(err){
+    console.error("❌ Firebase error:",err);
+    showToast('❌','Save failed: '+err.message,'error');
+    btn.disabled=false;
+  }
+  txt.textContent='Register Now';
+}
+
+function closeSuccess(){
+  document.getElementById('success-overlay').classList.remove('show');
+  ['full-name','student-id','email','message'].forEach(id=>document.getElementById(id).value='');
+  ['dept','year'].forEach(id=>document.getElementById(id).value='');
+  clearEvent();
+  document.getElementById('step-4').className='step';
+  document.getElementById('s4-num').textContent='04';
+}
+
+renderEvents('all');
+</script>
+</body>
+</html>
